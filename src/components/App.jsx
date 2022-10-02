@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Formik } from 'formik';
 import { Form, Header, Section, LabelName, Input, Button } from './App.styled';
 
 export class App extends Component {
@@ -8,7 +9,9 @@ export class App extends Component {
   };
 
   handleInput = event => {
+    event.preventDefault();
     this.setState({ name: event.currentTarget.value });
+    console.log(event.currentTarget.value);
   };
 
   render() {
