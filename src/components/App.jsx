@@ -1,40 +1,77 @@
 import { Component } from 'react';
-import { Formik } from 'formik';
-import { Form, Header, Section, LabelName, Input, Button } from './App.styled';
+import { nanoid } from 'nanoid';
+
+import { ContactForm } from 'components/ContactForm/ContactForm';
+import { ContactList } from 'components/ContactList/ContactList';
+// import { ContactItem } from 'components/ContactItem/ContactItem';
+import { Filter } from 'components/Filter/Filter';
+
+import { Div, Header, PContact, Section, Message } from './App.styled';
 
 export class App extends Component {
   state = {
     contacts: [],
-    name: '',
+    filter: '',
   };
 
-  handleInput = event => {
-    event.preventDefault();
-    this.setState({ name: event.currentTarget.value });
-    console.log(event.currentTarget.value);
+  handleInput = (values, { resetForm }) => {
+    resetForm();
+    const { name, number } = values;
+    const contact = {
+      name,
+      number,
+    };
+    const dublicateContact = this.findDublicateContact(
+      contact,
+      this.state.contacts
+    );
+    dublicateContact
+      ? alert(`${contact.name} is already in contacts`)
+      : this.setState(prevState => ({
+          contacts: [...prevState.contacts, { ...values, id: nanoid() }],
+        }));
+  };
+
+  findDublicateContact = (contact, contactsList) => {
+    return contactsList.find(
+      item => item.name.toLowerCase() === contact.name.toLowerCase()
+    );
+  };
+
+  getFilteredContacts = () => {
+    const normalizedFilter = this.state.filter.toLowerCase();
+    return this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  changeFilter = event => {
+    this.setState({
+      filter: event.currentTarget.value,
+    });
+  };
+
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
   };
 
   render() {
+    const contacts = this.getFilteredContacts();
     return (
-      <Form>
+      <Div>
         <Header>Phonebook</Header>
         <Section>
-          <LabelName>
-            Name
-            <Input
-              type="text"
-              name="name"
-              value={this.state.name}
-              onChange={this.handleInput}
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-            />
-          </LabelName>
-          <Button type="submit">Add contact</Button>
+          <ContactForm onSubmit={this.handleInput} />
         </Section>
-        <Header>Contacts</Header>
-      </Form>
+        <PContact>Contacts</PContact>
+        <Filter value={this.state.filter} onValueChange={this.changeFilter} />
+        {contacts.length === 0 && (
+          <Message>There is not any contacts yet</Message>
+        )}
+        <ContactList contacts={contacts} deleteContact={this.deleteContact} />
+      </Div>
     );
   }
 }
