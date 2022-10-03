@@ -6,6 +6,10 @@ export const Div = styled.div`
   align-items: left;
   flex-direction: column;
 `;
+export const Label = styled.label`
+  font-size: 24px;
+  margin-bottom: 5px;
+`;
 
 export const Input = styled.input`
   font-size: 16px;
@@ -13,9 +17,4 @@ export const Input = styled.input`
   margin-bottom: 20px;
   padding: 3px;
   font-weight: 700;
-`;
-
-export const Label = styled.label`
-  font-size: 24px;
-  margin-bottom: 5px;
 `;

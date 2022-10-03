@@ -12,7 +12,7 @@ export const Header = styled.p`
 export const PContact = styled.p`
   font-size: 24px;
   font-weight: 700;
-  margin: 20 0 10px 30px;
+  margin: 40px 0px 20px 30px;
 `;
 export const Section = styled.section`
   border: 1px solid;

@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid';
 
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactList } from 'components/ContactList/ContactList';
-// import { ContactItem } from 'components/ContactItem/ContactItem';
 import { Filter } from 'components/Filter/Filter';
 
 import { Div, Header, PContact, Section, Message } from './App.styled';
@@ -21,24 +20,23 @@ export class App extends Component {
       name,
       number,
     };
-    const dublicateContact = this.findDublicateContact(
-      contact,
-      this.state.contacts
-    );
+    const dublicateContact = this.findDublicate(contact, this.state.contacts);
     dublicateContact
-      ? alert(`${contact.name} is already in contacts`)
+      ? alert(`${contact.name} or ${contact.number} is already in contacts`)
       : this.setState(prevState => ({
           contacts: [...prevState.contacts, { ...values, id: nanoid() }],
         }));
   };
 
-  findDublicateContact = (contact, contactsList) => {
+  findDublicate = (contact, contactsList) => {
     return contactsList.find(
-      item => item.name.toLowerCase() === contact.name.toLowerCase()
+      item =>
+        item.name.toLowerCase() === contact.name.toLowerCase() ||
+        item.number === contact.number
     );
   };
 
-  getFilteredContacts = () => {
+  getFilterContacts = () => {
     const normalizedFilter = this.state.filter.toLowerCase();
     return this.state.contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
@@ -58,7 +56,7 @@ export class App extends Component {
   };
 
   render() {
-    const contacts = this.getFilteredContacts();
+    const contacts = this.getFilterContacts();
     return (
       <Div>
         <Header>Phonebook</Header>
@@ -67,9 +65,7 @@ export class App extends Component {
         </Section>
         <PContact>Contacts</PContact>
         <Filter value={this.state.filter} onValueChange={this.changeFilter} />
-        {contacts.length === 0 && (
-          <Message>There is not any contacts yet</Message>
-        )}
+        {contacts.length === 0 && <Message>There is not any contacts</Message>}
         <ContactList contacts={contacts} deleteContact={this.deleteContact} />
       </Div>
     );
