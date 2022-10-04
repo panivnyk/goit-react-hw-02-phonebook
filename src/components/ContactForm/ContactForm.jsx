@@ -6,7 +6,6 @@ import {
   FormContact,
   Input,
   Button,
-  Error,
 } from 'components/ContactForm/ContactForm.styled';
 
 const initialValues = {
@@ -27,7 +26,6 @@ export const ContactForm = ({ onSubmit }) => {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             placeholder="Enter name"
           />
-          <Error name="name" component="p" />
         </LabelName>
         <LabelName htmlFor="number">
           Number
@@ -38,7 +36,6 @@ export const ContactForm = ({ onSubmit }) => {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             placeholder="Enter number"
           />
-          <Error name="number" component="p" />
         </LabelName>
         <Button type="submit">Add contact</Button>
       </FormContact>
