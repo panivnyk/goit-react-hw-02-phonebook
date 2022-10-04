@@ -14,7 +14,6 @@ export class App extends Component {
   };
 
   handleInput = (values, { resetForm }) => {
-    resetForm();
     const { name, number } = values;
     const contact = {
       name,
@@ -26,6 +25,7 @@ export class App extends Component {
       : this.setState(prevState => ({
           contacts: [...prevState.contacts, { ...values, id: nanoid() }],
         }));
+    resetForm();
   };
 
   findDublicate = (contact, contactsList) => {

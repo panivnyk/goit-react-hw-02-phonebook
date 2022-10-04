@@ -17,7 +17,7 @@ export const Input = styled(Field)`
   margin: 0;
 `;
 export const Error = styled(ErrorMessage)`
-  position: absolute;
+  /* position: absolute; */
   margin-top: -30px;
   margin-left: 320px;
   width: 300px;
